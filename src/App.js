@@ -13,9 +13,15 @@ class App extends Component {
     search(){
         console.log(this.state);
         const BASE_URL = 'https://itunes.apple.com/search?'
-        const FETCH_URL = `${BASE_URL}term=${this.state.query}`;
+        const FETCH_URL = `${BASE_URL}term=${this.state.query}&limit=1`;
 
         console.log(FETCH_URL);
+
+        fetch(FETCH_URL, {
+            method: 'GET'
+        })
+        .then(response => response.json())
+        .then(json => console.log(json));
     }
 
     keyPress(event){

@@ -12,8 +12,8 @@ class App extends Component {
 
     search(){
         console.log(this.state);
-        const BASE_URL = 'https://api.spotify.com/v1/search?'
-        const FETCH_URL = `${BASE_URL}q=${this.state.query}&type=artist&limit=1`;
+        const BASE_URL = 'https://itunes.apple.com/search?'
+        const FETCH_URL = `${BASE_URL}term=${this.state.query}`;
 
         console.log(FETCH_URL);
     }
@@ -27,7 +27,7 @@ class App extends Component {
     render(){
         return(
             <div className="App">
-                <div className="App-title">itunes</div>
+                <div className="App-title">iTunes</div>
                 <FormGroup>
                     <InputGroup>
                         <FormControl

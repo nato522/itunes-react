@@ -75,3 +75,28 @@ body {
     bottom: 0;
     padding: 10px;
 }
+
+.track-play{
+    position: absolute;
+    width: 220px;
+    height: 220px;
+}
+
+.track-play-inner{
+    position: absolute;
+    text-align: center;
+    font-size: 25px;
+    background-color: black;
+    color: white;
+    border-radius: 30px;
+    width: 60px;
+    height: 60px;
+    padding-top: 13px;
+    margin-left: 80px;
+    margin-top: 80px;
+    opacity: 0;
+}
+
+.track-play-inner:hover{
+    opacity: 0.8;
+}

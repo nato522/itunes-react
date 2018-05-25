@@ -2,51 +2,70 @@ import React, { Component } from 'react';
 import './App.css';
 import { FormGroup, FormControl, InputGroup, Glyphicon } from 'react-bootstrap';
 import Profile from './Profile';
+import tokens from './credentials';
 
 class App extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
             query: '',
-            artist: null
+            artist: null,
+            tracks: []
         }
     }
 
-    search(){
+    search() {
         console.log(this.state);
-        const BASE_URL = 'https://itunes.apple.com/search?'
-        const FETCH_URL = `${BASE_URL}term=${this.state.query}&limit=1`;
+        const BASE_URL = 'https://api.spotify.com/v1/search?';
+        const ALBUM_URL = 'https://api.spotify.com/v1/artists/';
 
-        console.log(FETCH_URL);
+        let FETCH_URL = `${BASE_URL}q=${this.state.query}&type=artist&limit=1`;
 
-        fetch(FETCH_URL, {
-            method: 'GET'
-        })
-        .then(response => response.json())
-        .then(json => {
-            const artist = json.results[0];
-            console.log(artist);
-            this.setState({artist});
-        });
+        const ACCESS_TOKEN = tokens.ACCESS_TOKEN;
+
+        var myOptions = {
+            methos: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + ACCESS_TOKEN
+            },
+            mode: 'cors',
+            cache: 'deafult'
+        };
+
+        fetch(FETCH_URL, myOptions)
+            .then(response => response.json())
+            .then(json => {
+                const artist = json.artists.items[0];
+                this.setState({ artist });
+                FETCH_URL = `${ALBUM_URL}${artist.id}/top-tracks?country=US&`
+
+                fetch(FETCH_URL, myOptions)
+                    .then(response => response.json())
+                    .then(json => {
+                        console.log(json);
+                        const { tracks } = json;
+                        this.setState({tracks});
+                    })
+            });
     }
 
-    keyPress(event){
-        if (event.key === 'Enter'){
+    keyPress(event) {
+        if (event.key === 'Enter') {
             this.search()
         }
     }
 
-    render(){
-        return(
+    render() {
+        return (
             <div className="App">
-                <div className="App-title">iTunes</div>
+                <div className="App-title">Spotify</div>
                 <FormGroup>
                     <InputGroup>
                         <FormControl
                             type="text"
                             placeholder="Search an artist..."
                             value={this.state.query}
-                            onChange={event => {this.setState({query: event.target.value})}}
+                            onChange={event => { this.setState({ query: event.target.value }) }}
                             onKeyPress={(event) => this.keyPress(event)}
                         />
                         <InputGroup.Addon onClick={() => this.search()}>
@@ -54,12 +73,20 @@ class App extends Component {
                         </InputGroup.Addon>
                     </InputGroup>
                 </FormGroup>
-                <Profile
-                    artist={this.state.artist}
-                />
-                <div className="Gallery">
-                    Gallery
-                </div>
+                {
+                    this.state.artist !== null
+                        ?
+                        <div>
+                            <Profile
+                                artist={this.state.artist}
+                            />
+                            <div className="Gallery">
+                                Gallery
+                        </div>
+                        </div>
+                        :
+                        <div></div>
+                }
             </div>
         )
     }

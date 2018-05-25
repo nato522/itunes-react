@@ -21,10 +21,20 @@ class Gallery extends Component {
                 audio
             });
         } else {
-            this.state.audio.pause();
-            this.setState({
-                playing: false
-            });
+            if (this.state.playingUrl === previewUrl){
+                this.state.audio.pause();
+                this.setState({
+                    playing: false
+                });
+            } else {
+                this.state.audio.pause();
+                audio.play();
+                this.setState({
+                    playing: true,
+                    playingUrl: previewUrl,
+                    audio
+                });
+            }
         }
     }
 

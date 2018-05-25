@@ -51,7 +51,11 @@ class Gallery extends Component {
                                 <img src={trackImg} alt="track" className="track-img"/>
                                 <div className="track-play">
                                     <div className="track-play-inner">
-                                        &#9654;
+                                        {
+                                            this.state.playingUrl === track.preview_url
+                                                ? <span>| |</span>
+                                                : <span>&#9654;</span>
+                                        }
                                     </div>
                                 </div>
                                 <p className="track-text">{track.name}</p>
